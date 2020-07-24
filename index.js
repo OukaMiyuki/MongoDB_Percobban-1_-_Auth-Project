@@ -1,3 +1,4 @@
+const config = require('config');
 const mongoose = require('mongoose');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
@@ -7,6 +8,12 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
+require('dotenv').config();
+let key = process.env.jwtPrivateKey;
+if(!key){
+    console.error('Private Key is not defined!');
+    process.exit(1);
+}
 
 const mongoDB = 'mongodb://localhost/vidlyApp';
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false, useCreateIndex:true })

@@ -1,9 +1,12 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {User, validate} = require('../models/user');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
+let key = process.env.jwtPrivateKey;
 
 router.post('/', async (req, res) => {
     const { error } = validate(req.body); 
@@ -18,8 +21,8 @@ router.post('/', async (req, res) => {
         const salt = await bcrypt.genSalt(10);//create salt with default character 10, you can feel this this whatever value you wanna store for example 20
         user.password = await bcrypt.hash(user.password, salt);//hashing the password
         await user.save();
-
-        res.send(_.pick(user, ['_id','name', 'email']));
+        const token = jwt.sign( { _id: user._id }, key);
+        res.header('x-auth-token', token).send(_.pick(user, ['_id','name', 'email']));
     } catch(ex){
         console.log('There\'s an error ', ex.message);
         //res.status(400).send('An error occured', ex.message);
