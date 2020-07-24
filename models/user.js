@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const { isRegExp } = require('lodash');
 
 const User = mongoose.model('User', new mongoose.Schema({
     name: {
