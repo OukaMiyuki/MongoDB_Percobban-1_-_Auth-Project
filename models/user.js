@@ -23,7 +23,7 @@ const User = mongoose.model('User', new mongoose.Schema({
     }
 }));
 
-function validateGenre(user) {
+function validateUser(user) {
   //const pattern = new RegExp("/(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[$@$!#.])/");
   //const pattern = "/(?=.*[a-z])/";
   // const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9]))|(?=.*[!@#$%^&*]))(?=.{6,})");
@@ -48,4 +48,4 @@ function validateGenre(user) {
 }
 
 exports.User = User; 
-exports.validate = validateGenre;
+exports.validate = validateUser;
