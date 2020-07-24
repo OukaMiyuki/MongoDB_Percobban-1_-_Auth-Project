@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
         res.send(_.pick(user, ['_id','name', 'email']));
     } catch(ex){
         console.log('There\'s an error ', ex.message);
-        //res.status(400).send('An error occured', ex.message);
+        res.status(400).send('An error occured', ex.message);
     }
 });
 
