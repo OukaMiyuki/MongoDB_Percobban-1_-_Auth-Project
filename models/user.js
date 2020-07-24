@@ -1,27 +1,37 @@
+const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
+require('dotenv').config();
+let key = process.env.jwtPrivateKey;
 
-const User = mongoose.model('User', new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50
-    },
-    email:{
-        type: String,
-        required: true,
-        minlength: 10,
-        maxlength: 255,
-        unique: true
-    },
-    password:{
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 1024
-    }
-}));
+const userSchema = new mongoose.Schema({
+  name: {
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 50
+  },
+  email:{
+      type: String,
+      required: true,
+      minlength: 10,
+      maxlength: 255,
+      unique: true
+  },
+  password:{
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 1024
+  }
+});
+
+userSchema.methods.generateAuthToken = function(){
+  const token = jwt.sign( { _id: this._id }, key);
+  return token;
+}
+
+const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
   //const pattern = new RegExp("/(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[$@$!#.])/");

@@ -1,5 +1,3 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const _ = require('lodash');
@@ -7,8 +5,6 @@ const {User} = require('../models/user');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
-require('dotenv').config();
-let key = process.env.jwtPrivateKey;
 
 router.post('/', async (req, res) => {
     const { error } = validate(req.body); 
@@ -21,7 +17,7 @@ router.post('/', async (req, res) => {
         if(!validPassword){
             res.status(400).send('Invalid email or password!');
         } else{
-            const token = jwt.sign( { _id: user._id }, key);
+            const token = user.generateAuthToken();
             res.send(token);
         }
     } catch(ex){
